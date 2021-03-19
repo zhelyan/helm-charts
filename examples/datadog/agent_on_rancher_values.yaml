@@ -28,6 +28,7 @@ datadog:
     enableTCPQueueLength: false
     enableOOMKill: true
     collectDNSStats: false
+    enableRuntimeCompiler: false
 agents:
   tolerations:
     # These tolerations are needed to run the agent on master nodes

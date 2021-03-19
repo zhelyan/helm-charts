@@ -28,3 +28,4 @@ datadog:
     enableTCPQueueLength: false
     enableOOMKill: true
     collectDNSStats: false
+    enableRuntimeCompiler: false

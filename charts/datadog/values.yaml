@@ -312,6 +312,9 @@ datadog:
     # datadog.systemProbe.enableOOMKill -- Enable the OOM kill eBPF-based check
     enableOOMKill: false
 
+    # datadog.systemProbe.enableRuntimeCompiler -- Enable runtime compilation of eBPF programs in the system probe
+    enableRuntimeCompiler: false
+
     # datadog.systemProbe.collectDNSStats -- Enable DNS stat collection
     collectDNSStats: false
 
