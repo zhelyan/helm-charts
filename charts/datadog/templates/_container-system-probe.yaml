@@ -47,7 +47,7 @@
       mountPath: /host/proc
       mountPropagation: {{ .Values.datadog.hostVolumeMountPropagation }}
       readOnly: true
-{{- if or .Values.datadog.systemProbe.enableTCPQueueLength .Values.datadog.systemProbe.enableOOMKill }}
+{{- if or .Values.datadog.systemProbe.enableTCPQueueLength .Values.datadog.systemProbe.enableOOMKill .Values.datadog.systemProbe.enableRuntimeCompiler }}
     - name: modules
       mountPath: /lib/modules
       mountPropagation: {{ .Values.datadog.hostVolumeMountPropagation }}
@@ -60,6 +60,32 @@
 {{- if and .Values.datadog.securityAgent.runtime.enabled .Values.datadog.securityAgent.runtime.policies.configMap }}
     - name: runtimepoliciesdir
       mountPath: /etc/datadog-agent/runtime-security.d
+      readOnly: true
+{{- end }}
+{{- if .Values.datadog.systemProbe.enableRuntimeCompiler }}
+    - name: kernel-headers-dir
+      mountPath: /tmp/kernel-headers
+      readOnly: false
+    - name: etc-os-release
+      mountPath: /etc/os-release
+      readOnly: true
+    - name: usr-lib-os-release
+      mountPath: /usr/lib/os-release
+      readOnly: true
+    - name: apt-config-dir
+      mountPath: /etc/apt
+      readOnly: true
+    - name: yum-repos-dir
+      mountPath: /etc/yum.repos.d
+      readOnly: true
+    - name: public-key-dir
+      mountPath: /etc/pki
+      readOnly: true
+    - name: rhel-subscription-dir
+      mountPath: /etc/rhsm
+      readOnly: true
+    - name: opensuse-repos-dir
+      mountPath: /etc/zypp
       readOnly: true
 {{- end }}
 {{- if .Values.agents.volumeMounts }}
