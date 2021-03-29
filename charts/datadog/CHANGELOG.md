@@ -1,4 +1,7 @@
 # Datadog changelog
+## 2.10.11
+
+* Add `enableRuntimeCompiler` option & bind various mounts in the `system-probe` which are required for kernel header downloading.
 
 ## 2.10.10
 
