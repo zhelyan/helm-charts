@@ -1,5 +1,9 @@
 # Datadog changelog
 
+## 2.11.1
+
+* Add RBAC rules for the Cluster Agent in order to collect new resources in the Orchestrator Explorer.
+
 ## 2.11.0
 
 * Bump Agent version to `7.27.0`.
