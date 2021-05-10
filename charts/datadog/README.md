@@ -1,6 +1,6 @@
 # Datadog
 
-![Version: 2.13.0](https://img.shields.io/badge/Version-2.13.0-informational?style=flat-square) ![AppVersion: 7](https://img.shields.io/badge/AppVersion-7-informational?style=flat-square)
+![Version: 2.14.0](https://img.shields.io/badge/Version-2.14.0-informational?style=flat-square) ![AppVersion: 7](https://img.shields.io/badge/AppVersion-7-informational?style=flat-square)
 
 [Datadog](https://www.datadoghq.com/) is a hosted infrastructure monitoring platform. This chart adds the Datadog Agent to all nodes in your cluster via a DaemonSet. It also optionally depends on the [kube-state-metrics chart](https://github.com/kubernetes/kube-state-metrics/tree/master/charts/kube-state-metrics). For more information about monitoring Kubernetes with Datadog, please refer to the [Datadog documentation website](https://docs.datadoghq.com/agent/basic_agent_usage/kubernetes/).
 
@@ -139,6 +139,28 @@ helm upgrade -f datadog-values.yaml <RELEASE_NAME> datadog/datadog --recreate-po
 ```
 
 See the [All configuration options](#all-configuration-options) section to discover all possibilities offered by the Datadog chart.
+
+### Enabling APM and Trace
+
+APM is enabled by default thrue socket communication; more details about the applications configuration are available on the [official documentation](https://docs.datadoghq.com/agent/kubernetes/apm/?tab=helm)
+
+Update your [datadog-values.yaml](values.yaml) file with the following configration to enabled TCP communication thanks to a `hostPort`:
+
+```yaml
+datadog:
+  # (...)
+  apm:
+    portEnabled: true
+```
+
+To disable the socket communication, update you [datadog-values.yaml](values.yaml) file with the following configration:
+
+```yaml
+datadog:
+  # (...)
+  apm:
+    socketEnabled: true
+```
 
 ### Enabling Log Collection
 
@@ -449,11 +471,13 @@ helm install --name <RELEASE_NAME> \
 | datadog-crds.crds.datadogMetrics | bool | `true` | Set to true to deploy the DatadogMetrics CRD |
 | datadog.apiKey | string | `"<DATADOG_API_KEY>"` | Your Datadog API key ref: https://app.datadoghq.com/account/settings#agent/kubernetes |
 | datadog.apiKeyExistingSecret | string | `nil` | Use existing Secret which stores API key instead of creating a new one |
-| datadog.apm.enabled | bool | `false` | Enable this to enable APM and tracing, on port 8126 |
+| datadog.apm.enabled | bool | `false` | Enable this to enable APM and tracing, on port 8126 DEPRECATED. Use datadog.apm.portEnabled instead |
 | datadog.apm.hostSocketPath | string | `"/var/run/datadog/"` | Host path to the trace-agent socket |
 | datadog.apm.port | int | `8126` | Override the trace Agent port |
+| datadog.apm.portEnabled | bool | `false` | Enable APM over TCP communication (port 8216 by default |
+| datadog.apm.socketEnabled | bool | `true` | Enable APM over Socket (Unix Socket or windows named pipe) |
 | datadog.apm.socketPath | string | `"/var/run/datadog/apm.socket"` | Path to the trace-agent socket |
-| datadog.apm.useSocketVolume | bool | `false` | Enable APM over Unix Domain Socket |
+| datadog.apm.useSocketVolume | bool | `false` | Enable APM over Unix Domain Socket DEPRECATED. Use datadog.apm.socketEnabled instead |
 | datadog.appKey | string | `nil` | Datadog APP key required to use metricsProvider |
 | datadog.appKeyExistingSecret | string | `nil` | Use existing Secret which stores APP key instead of creating a new one |
 | datadog.checksd | object | `{}` | Provide additional custom checks as python code |
